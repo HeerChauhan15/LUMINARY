@@ -21,14 +21,9 @@ GST_RATE_FIXED = 18.0
 # ============================================
 # SEGMENT CONFIG
 # One place to control files, Sum Assured range and Tenure range per loan type.
-# "Level" cover for Vehicle Loan uses the "VL FLAT" file.
 # (File names are matched ignoring case, spaces, hyphens and the extension.)
 # ============================================
-ALL_SEGMENTS = {
-    "Home Loan": {
-        "files": {"Level": "HL Level.xlsx", "Reducing": "HL Reducing.xlsx"},
-        "sa_min": 50000, "sa_max": 6000000, "t_min": 5, "t_max": 25,
-    },
+SEGMENTS = {
     "Lap": {
         "files": {"Level": "LAP Level.xlsx", "Reducing": "Lap Reducing.xlsx"},
         "sa_min": 50000, "sa_max": 4000000, "t_min": 2, "t_max": 10,
@@ -37,27 +32,7 @@ ALL_SEGMENTS = {
         "files": {"Level": "PL Level.xlsx", "Reducing": "PL Reducing.xlsx"},
         "sa_min": 25000, "sa_max": 3000000, "t_min": 2, "t_max": 5,
     },
-    "Business Loan": {
-        "files": {"Level": "BL Level.xlsx", "Reducing": "BL Reducing.xlsx"},
-        "sa_min": 50000, "sa_max": 5000000, "t_min": 2, "t_max": 10,
-    },
-    "Car Loan": {
-        "files": {"Level": "CL Level.xlsx", "Reducing": "CL Reducing.xlsx"},
-        "sa_min": 100000, "sa_max": 5000000, "t_min": 2, "t_max": 7,
-    },
-    "Education Loan": {
-        "files": {"Level": "EL Level.xlsx", "Reducing": "EL Reducing.xlsx"},
-        "sa_min": 25000, "sa_max": 5000000, "t_min": 2, "t_max": 10,
-    },
-    "Vehicle Loan": {
-        "files": {"Level": "VL FLAT.xlsx", "Reducing": "VL Reducing.xlsx"},
-        "sa_min": 25000, "sa_max": 500000, "t_min": 2, "t_max": 5,
-    },
 }
-
-# Only these segments are shown in the dropdown
-SHOWN_SEGMENTS = ["Lap", "Personal Loan"]
-SEGMENTS = {k: v for k, v in ALL_SEGMENTS.items() if k in SHOWN_SEGMENTS}
 
 AGE_MIN, AGE_MAX = 18, 65
 
