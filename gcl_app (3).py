@@ -9,40 +9,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# ============================================
-# CLIENT CONFIG (backend only - never shown to the user)
-# Each client is tied to ONE rate set (folder). The folder names are neutral
-# on purpose, so nothing in the app or repo reveals the loading.
-#
-#   rates/
-#     set1/  LAP Level.xlsx, Lap Reducing.xlsx, PL Level.xlsx, PL Reducing.xlsx
-#     set2/  LAP Level.xlsx, Lap Reducing.xlsx, PL Level.xlsx, PL Reducing.xlsx
-#
-# The client is identified by:
-#   1) the CLIENT_CODE environment variable (best: one deployment per client), or
-#   2) the ?c=<code> part of the link (one deployment shared by all clients).
-# Use hard-to-guess codes if you rely on the link.
-# ============================================
-CLIENTS = {
-    "xyz": {
-        "title": "XYZ Finance Calculator",
-        "segments": ["Lap", "Personal Loan"],
-        "rates_dir": "rates/set1",
-    },
-    "abc": {
-        "title": "ABC Bank Calculator",
-        "segments": ["Lap", "Personal Loan"],
-        "rates_dir": "rates/set2",
-    },
-}
+# Change this title for each client's app
+APP_TITLE = "GCL Client Calculator"
 
-client_code = os.environ.get("CLIENT_CODE") or st.query_params.get("c", "")
-client = CLIENTS.get(str(client_code).strip().lower())
-if client is None:
-    st.error("Invalid or missing link. Please contact your relationship manager.")
-    st.stop()
-
-st.title(f"💰 {client['title']}")
+st.title(f"💰 {APP_TITLE}")
 st.markdown("Select plan details below")
 
 # GST is fixed and always applied on top of the premium.
@@ -85,8 +55,9 @@ ALL_SEGMENTS = {
     },
 }
 
-# Only the segments allowed for this client are shown in the dropdown.
-SEGMENTS = {k: v for k, v in ALL_SEGMENTS.items() if k in client["segments"]}
+# Only these segments are shown in the dropdown
+SHOWN_SEGMENTS = ["Lap", "Personal Loan"]
+SEGMENTS = {k: v for k, v in ALL_SEGMENTS.items() if k in SHOWN_SEGMENTS}
 
 AGE_MIN, AGE_MAX = 18, 65
 
@@ -111,19 +82,14 @@ def _norm_name(s):
 
 
 def resolve_file(fname):
-    """Look inside this client's rate folder. Exact match first; otherwise match
-    ignoring case, spaces, hyphens and extension, so small filename differences
-    don't break the lookup."""
-    folder = client["rates_dir"]
-    exact = os.path.join(folder, fname)
-    if os.path.exists(exact):
-        return exact
-    if not os.path.isdir(folder):
-        return None
+    """Exact match first; otherwise match ignoring case, spaces, hyphens and
+    extension, so small filename differences don't break the lookup."""
+    if os.path.exists(fname):
+        return fname
     target = _norm_name(fname)
-    for f in os.listdir(folder):
+    for f in os.listdir("."):
         if f.lower().endswith((".xlsx", ".xls", ".xlsm")) and _norm_name(f) == target:
-            return os.path.join(folder, f)
+            return f
     return None
 
 
@@ -132,7 +98,7 @@ def load_rate_table(cover_type, loan_type):
     path = resolve_file(fname)
     if path is None:
         raise FileNotFoundError(
-            f"Rate file not found: '{fname}' — Please make sure it is in this client's rate folder in the GitHub repo."
+            f"File not found: '{fname}' — Please make sure this file is in the GitHub repo."
         )
 
     sheet = "Sheet1" if "Sheet1" in pd.ExcelFile(path).sheet_names else 0
