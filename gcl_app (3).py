@@ -4,7 +4,7 @@ import os
 import re
 
 st.set_page_config(
-    page_title="GCL Client Calculator",
+    page_title=" Luminary GCL Client Calculator",
     page_icon="💰",
     layout="wide"
 )
