@@ -25,11 +25,11 @@ GST_RATE_FIXED = 18.0
 # ============================================
 SEGMENTS = {
     "Lap": {
-        "files": {"Level": "LAP Level.xlsx", "Reducing": "Lap Reducing.xlsx"},
+        "files": {"Level": "LAP Level.xlsx", "Reducing": "Lap Reduce.xlsx"},
         "sa_min": 50000, "sa_max": 4000000, "t_min": 2, "t_max": 10,
     },
     "Personal Loan": {
-        "files": {"Level": "PL Level.xlsx", "Reducing": "PL Reducing.xlsx"},
+        "files": {"Level": "PL Level.xlsx", "Reducing": "PL Reduce.xlsx"},
         "sa_min": 25000, "sa_max": 3000000, "t_min": 2, "t_max": 5,
     },
 }
