@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # Change this title for each client's app
-APP_TITLE = "GCL Client Calculator"
+APP_TITLE = " Luminary GCL Client Calculator"
 
 st.title(f"💰 {APP_TITLE}")
 st.markdown("Select plan details below")
